@@ -2,12 +2,15 @@
 
 char *mx_strndup(const char *s1, size_t n) {
 	char *newnstr;
-
-	if (!(newnstr = mx_strnew(mx_strlen(s1))))
-		return NULL;
-
-	for (int i = 0; n > 0; n--, i++)
-		newnstr[i] = s1[i];
+	n = n < (size_t)mx_strlen(s1) ? n : (size_t)mx_strlen(s1);
+	
+	newnstr = mx_strnew(n);
+	
+	if (newnstr) {
+		newnstr[n] = '\0';
+		while ((n--) > 0)
+			newnstr[n] = s1[n];
+	}
 
 	return newnstr;
 }

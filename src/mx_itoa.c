@@ -3,7 +3,7 @@
 char *mx_itoa(int number) {
 	int len = mx_genlenn(number);
 	char *str_number = mx_strnew(len);
-	int new_number;
+	unsigned int new_number;
 	
 	new_number = number;
 	if (number == 0)
