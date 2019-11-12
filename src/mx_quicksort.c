@@ -9,23 +9,25 @@ int mx_quicksort(char **arr, int left, int right) {
 	if (!arr)
 		return -1;
 
-	while (l < r) {
+	while (l <= r) {
 		for (; mx_strlen(arr[l]) < mx_strlen(pivot); l++);
-
 		for (; mx_strlen(arr[r]) > mx_strlen(pivot); r--);
 
-		if (l <= r)
+		if (l <= r) {
 			if (mx_strlen(arr[l]) > mx_strlen(arr[r])) {
-				mx_swap_str(arr + (l++), arr + (r--));
+				mx_swap_str(&arr[l], &arr[r]);
 				swap++;
 			}
-
+			l++;
+			r--;
+		}
 	}
+	
+	if (left < r)
+	 	swap += mx_quicksort(arr, left, r);
+	
+	if (right > l)
+	 	swap += mx_quicksort(arr, l, right);
 
-	if (swap) {
-        swap = l < right ? mx_quicksort(arr, l, right) : 0;
-        swap += left < r ? mx_quicksort(arr, left, r) : 0;
-    }
-
-    return 1 + swap;
+	return swap;
 }
