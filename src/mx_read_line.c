@@ -1,19 +1,17 @@
 #include "libmx.h"
 
-static int	mx_check_line(int const fd, char *mass, char *stak[fd], int buf_size, char delim) {
+static int	mx_check_line(t_rl *read_l, char *stak[read_l->fd]) {
 	int	ret;
-	char *sup;
-	char *pos;
 
-	while ((pos = mx_strchr(mass, delim)) == NULL \
-			&& (ret = read(fd, mass, buf_size)) > 0) {
-		mass[ret] = '\0';
-		sup = stak[fd];
-		stak[fd] = mx_strjoin(sup, mass);
-		mx_strdel(&sup);
+	while ((read_l->pos = mx_strchr(read_l->mass, read_l->delim)) == NULL \
+			&& (ret = read(read_l->fd, read_l->mass, read_l->buf_size)) > 0) {
+		read_l->mass[ret] = '\0';
+		read_l->sup = stak[read_l->fd];
+		stak[read_l->fd] = mx_strjoin(read_l->sup, read_l->mass);
+		mx_strdel(&(read_l->sup));
 	}
 
-	mx_strdel(&mass);
+	mx_strdel(&(read_l->mass));
 
 	if (ret == -1)
 		return (-2);
@@ -22,28 +20,37 @@ static int	mx_check_line(int const fd, char *mass, char *stak[fd], int buf_size,
 }
 
 int mx_read_line(char **lineptr, int buf_size, char delim, const int fd) {
-	static char	 *stak[1024];
-	char *mass;
-	int	ret;
-	char *sup;
-	char *pos;
+	static char	 *stak[256];
+	t_rl *read_l;
 
-	if (fd < 0 || buf_size < 1 || !(mass = mx_strnew(buf_size)))
+	if (fd < 0 || buf_size < 1 || !(read_l = (t_rl *)malloc(sizeof(t_rl)))
+		|| !(read_l->mass = mx_strnew(buf_size)))
 		return (-2);
-
+	
+	read_l->buf_size = buf_size;
+	read_l->delim = delim;
+	read_l->fd = fd;
+	
 	if (stak[fd] == NULL)
 		stak[fd] = mx_strnew(1);
-	if ((ret = mx_check_line(fd, mass, stak, buf_size, delim)) == -1)
+	
+	if (mx_check_line(read_l, stak) == -1) {
+		free(read_l);
 		return (-2);
-	if ((pos = mx_strchr(stak[fd], delim)) != NULL)
-	{
-		*lineptr = mx_strsub(stak[fd], 0, pos - stak[fd]);
-		sup = stak[fd];
-		stak[fd] = mx_strdup(pos + 1);
-		mx_strdel(&sup);
+	}
+	
+	if ((read_l->pos = mx_strchr(stak[fd], read_l->delim)) != NULL){
+
+		*lineptr = mx_strsub(stak[fd], 0, read_l->pos - stak[fd]);
+		read_l->sup = stak[fd];
+		stak[fd] = mx_strdup(read_l->pos + 1);
+		mx_strdel(&(read_l->sup));
+		free(read_l);
 		return mx_strlen(*lineptr);
 	}
-	*lineptr = mx_strdup(stak[fd]);
-	mx_strdel(&stak[fd]);
+
+	*lineptr = mx_strdup(stak[read_l->fd]);
+	mx_strdel(&stak[read_l->fd]);
+	free(read_l);
 	return -1;
 }

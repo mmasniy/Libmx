@@ -8,10 +8,22 @@
 #include <fcntl.h>
 #include <malloc/malloc.h>
 
-typedef struct s_list {
-void *data;
-struct s_list *next;
-} t_list;
+typedef struct		s_list 
+{
+	void 			*data;
+	struct s_list 	*next;
+} 					t_list;
+
+typedef struct		s_rl
+{
+	char			*mass;
+	int				buf_size;
+	int				ret;
+	char			delim;
+	char			*sup;
+	char			*pos;
+	int				fd;
+}					t_rl;
 
 bool mx_isdigit(int c);
 bool mx_isspace(char c);
