@@ -5,7 +5,6 @@ char *mx_strstr(const char *haystack, const char *needle) {
 
 	if (!len)
 		return (char *)haystack;
-	
 	while (*haystack) {
 		if (*haystack == *needle) {
 			if (mx_strncmp(haystack, needle, len) == 0)
@@ -13,6 +12,5 @@ char *mx_strstr(const char *haystack, const char *needle) {
 		}
 		haystack++;
 	}
-
 	return 0;
 }

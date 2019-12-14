@@ -9,7 +9,6 @@ int mx_sqrt(int x) {
 	while (left <= right) {
 		middle = left + (right - left) / 2;
 		result = middle * middle;
-
 		if (result == x)
 			return middle;
 		else if (result > x)

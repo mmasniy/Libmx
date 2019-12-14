@@ -5,10 +5,8 @@ void mx_pop_back(t_list **head) {
 
 	if (head && *head && (*head)->next) {
 		temp = *head;
-
 		while (temp->next->next)
 			temp = temp->next;
-		
 		free(temp->next);
 		temp->next = NULL;
 	}

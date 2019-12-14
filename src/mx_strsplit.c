@@ -14,29 +14,25 @@ static int genlen(const char *str, char c) {
 	return len;
 }
 
-char **mx_strsplit(const char *s, char c) {
-	int i = -1;
-	int j = 0;
-	int a;
-	char **str;
+char **mx_strsplit(char const *s, char c) {
+	char	**newstr;
+	int		i = -1;
+	int		j = 0;
+	int		a;
 
-	if (!s)
-		return NULL;
-
-	if (!(str = (char **)malloc(sizeof(*str) * mx_count_words(s, c) + 1)))
-		return NULL;
+	if (!s || !(newstr = (char**)malloc(sizeof(*newstr)\
+										* (mx_count_words(s, c) + 1))))
+		return (NULL);
 	while (++i < mx_count_words(s, c)) {
 		a = 0;
-
-		str[i] = mx_strnew(genlen(&s[j], c));
-
+		if (!(newstr[i] = mx_strnew(genlen(&s[j], c) + 1)))
+			newstr[i] = NULL;
 		while (s[j] == c)
 			j++;
-		while (s[j] != c && s[j]) {
-			str[i][a++] = s[j++];
-		}
-		str[i][a] = '\0';
+		while (s[j] != c && s[j])
+			newstr[i][a++] = s[j++];
+		newstr[i][a] = '\0';
 	}
-	str[i] = NULL;
-	return str;
+	newstr[i] = NULL;
+	return newstr;
 }

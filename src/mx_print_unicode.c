@@ -3,9 +3,8 @@
 void mx_print_unicode(wchar_t c) {
 	char output[5] = {0};
 
-	if (c < 0x80) { //< 128
+	if (c < 0x80)
 		output[0] = (c >> 0 & 0x7F) | 0x00;
-	}
 	else if (c < 0x0800) { // < 2048
 		output[0] = (c >> 6 & 0x1F) | 0xC0;
 		output[1] = (c >> 0 & 0x3F) | 0x80;
@@ -15,7 +14,7 @@ void mx_print_unicode(wchar_t c) {
 		output[1] = (c >> 6 & 0x3F) | 0x80;
 		output[2] = (c >> 0 & 0x3F) | 0x80;
 	}
-	else if (c < 0x110000) { // < 1114112
+	else { // < 1114112
 		output[0] = (c >> 18 & 0x07) | 0xF0;
 		output[1] = (c >> 12 & 0x3F) | 0x80;
 		output[2] = (c >> 6 & 0x3F) | 0x80;

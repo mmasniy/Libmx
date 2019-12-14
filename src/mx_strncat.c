@@ -6,12 +6,8 @@ char *mx_strncat (char *restrict dst, const char *restrict app, size_t n) {
 
 	while (dst[i])
 		i++;
-	while (app[j] && (j < n)) {
-		dst[i] = app[j];
-		i++;
-		j++;
-	}
-
+	while (app[j] && (j < n))
+		dst[i++] = app[j++];
 	dst[i] = '\0';
 	return (dst);
 }

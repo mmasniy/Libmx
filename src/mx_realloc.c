@@ -10,7 +10,6 @@ void *mx_realloc(void *ptr, size_t size) {
 	}
 	if (!ptr && size)
 		return malloc(size);
-
 	len = malloc_size(ptr);
 	if (len > size)
 		new_ptr = (void *)malloc(len);

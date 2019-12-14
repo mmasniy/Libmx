@@ -8,9 +8,7 @@ int mx_atoi(const char *str) {
 
     if (*str == '+' || *str == '-')
         sign = *str++ == '-';
-
     while (*str && mx_isdigit(*str))
         sum = sum * 10 + *str++ - 48;
-
     return sign ? -sum : sum;
 }

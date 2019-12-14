@@ -7,7 +7,6 @@ static size_t get_len_file(const char *file) {
 
 	while (read(fd, &buffer, 1) > 0)
 		++size;
-
 	close(fd);
 	return size;
 }
@@ -18,10 +17,8 @@ static char *file_to_str(const char *file, char *filestr) {
 
 	if (!fd)
 		return NULL;
-
 	for (size_t i = 0; read(fd, &buffer, 1) > 0; i++)
 		filestr[i] = buffer;
-
 	close(fd);
 	return filestr;
 }
@@ -32,10 +29,8 @@ char *mx_file_to_str(const char *file) {
 	
 	if (!file)
 		return NULL;
-	
 	if (!(len = get_len_file(file)))
 		return NULL;
-
 	if (file && (len >= 0)) {
 		filestr = mx_strnew(len);
 		if (file_to_str(file, filestr))
